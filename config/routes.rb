@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+    
+    get 'data/collect' => 'data_collection#getdata'
+    get 'stats' => 'stats#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
