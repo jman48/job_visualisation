@@ -3,7 +3,7 @@ class DataCollectionController < ApplicationController
     require 'json'
 
     def getdata
-        types = ["javascript"]
+        types = [params[:lang]]
         salaryRanges = setupSalary
         @data = Hash.new       
         
@@ -13,7 +13,7 @@ class DataCollectionController < ApplicationController
                 total = jsonObject["TotalCount"]
                 @data["language"] = type
                 @data["salary_min"] = salary[0].to_i
-                @data["salary_min"] = salary[1].to_i
+                @data["salary_max"] = salary[1].to_i
                 @data["count"] = jsonObject["TotalCount"].to_i
                 Language.create(@data)
             end

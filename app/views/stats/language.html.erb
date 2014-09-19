@@ -1,0 +1,28 @@
+<script>
+    var selectedLang = "<%= params[:lang] %>";
+    var allLangs = [
+    <% @eachdata.each do |lang| %>
+            [<% lang[1].each do |item| %>
+               <%= raw item.to_json %>,
+           <% end %>],
+     <% end %>];
+    
+</script>
+<div class="container">  
+    <h4>Total: <%= @totalcount %></h4>
+    <div id="chart"></div>
+    <div id="chart2"></div>
+    
+    <!-- Hidden tool tip. sssshhhh! -->
+    <div id="tooltip_d3" class="hidden_tool">
+        <p><strong><span id="title">Important Label Heading</span></strong></p>
+        <p><span id="value">1</span></p>
+    </div>
+</div>
+<script>
+    var data = <%= raw @langdata.to_json %>;
+    var allData = <%= raw @alldata.to_json %>;
+    var color = d3.scale.category20();
+    drawBar(getSelected(selectedLang));
+    drawDonut(allData);
+</script>

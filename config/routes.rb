@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
     
     get 'data/collect' => 'data_collection#getdata'
+    
     get 'stats' => 'stats#index'
+    get 'stats/language' => 'stats#language'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
