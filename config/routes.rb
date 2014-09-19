@@ -4,6 +4,10 @@ Rails.application.routes.draw do
     
     get 'stats' => 'stats#index'
     get 'stats/language' => 'stats#language'
+    get 'stats/seedata' => 'stats#seedata'
+    
+    
+    
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

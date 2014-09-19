@@ -31,7 +31,15 @@ class StatsController < ApplicationController
         lang.each do |salary|
             @langdata.push(salary)
         end
-    end   
+    end  
+    
+    def seedata
+        @data = Array.new
+        tempdata = Language.where("language = ?", params[:lang]) 
+        tempdata.each do |item|
+            @data.push(item) 
+        end
+    end
     
     
 end

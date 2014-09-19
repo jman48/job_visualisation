@@ -3,21 +3,43 @@ class DataCollectionController < ApplicationController
     require 'json'
 
     def getdata
-        types = [params[:lang]]
+        type = params[:lang]
         salaryRanges = setupSalary
-        @data = Hash.new       
-        
-        types.each do |type| 
-            salaryRanges.each do |salary|
-                jsonObject = JSON.parse(open("http://api.trademe.co.nz/v1/Search/Jobs.JSON?category=5112&salary_min=" + salary[0].to_s + "&salary_max=" + salary[1].to_s + "&search_string=" + type).read)
-                total = jsonObject["TotalCount"]
-                @data["language"] = type
-                @data["salary_min"] = salary[0].to_i
-                @data["salary_max"] = salary[1].to_i
-                @data["count"] = jsonObject["TotalCount"].to_i
-                Language.create(@data)
-            end
+        regions = setupRegions
+        @data = Hash.new 
+        salaryRanges.each do |salary|
+            @pagecount = 1;
+            @page = 1
+            jsonObject = JSON.parse(open("http://api.trademe.co.nz/v1/Search/Jobs.JSON?category=5112&salary_min=" + salary[0].to_s + "&salary_max=" + salary[1].to_s + "&search_string=" + type).read)
+            total = jsonObject["TotalCount"]
+            @pagecount += (total / 25).round
+            @data["language"] = type
+            @data["salary_min"] = salary[0].to_i
+            @data["salary_max"] = salary[1].to_i
+            @data["count"] = jsonObject["TotalCount"].to_i
+            @data["region"] = jsonObject["region"]
+            @page += 1
+            puts "page1: " + @page.to_s
+            while @page <= @pagecount do
+                json = JSON.parse(open("http://api.trademe.co.nz/v1/Search/Jobs.JSON?category=5112&salary_min=" + salary[0].to_s + "&salary_max=" + salary[1].to_s + "&search_string=" + type + "&page=" + @page.to_s).read)
+                json["List"].each do |list|
+                    listing = Hash.new
+                    listing["language"] = type
+                    listing["salary_min"] = salary[0]
+                    listing["salary_max"] = salary[1]
+                    listing["listing"] = list.to_s
+                    puts listing
+                    Listing.create(listing)
+                end
+                @page += 1
+                puts "page: " + @page.to_s + "  page count: " + @pagecount.to_s
+            end            
+            #Language.create(@data)
         end
+    end
+    
+    def databyregion 
+        
     end
     
      private
@@ -30,4 +52,24 @@ class DataCollectionController < ApplicationController
             end
             return salaryRanges;
         end
+    
+    def setupRegions
+        regions = [[9, "Northland"],
+                    [1, "Auckland"],
+                    [14, "Waikato"],
+                    [2, "Bay Of Plenty"],
+                    [4, "Gisborne"],
+                    [5, "Hawke's Bay"],
+                    [12, "Taranaki"],
+                    [6, "Manawatu / Wanganui"],
+                    [15, "Wellington"],
+                    [8, "Nelson / Tasman"],
+                    [7, "Marlborough"],
+                    [16, "West Coast"],
+                    [3, "Canterbury"],
+                    [10, "Otago"],
+                    [11, "Southland"]];
+        return regions;
+	end
 end
+	
