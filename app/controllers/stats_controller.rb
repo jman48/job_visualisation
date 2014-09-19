@@ -10,11 +10,15 @@ class StatsController < ApplicationController
     
     def language        
         @eachdata = Array.new
+        @max = 0;
         Language.uniq.pluck(:language).each do |lang|
             query = Language.where("language = ?", lang)
             temp = Array.new
             query.each do |item|
                 temp.push(item) 
+                if(item.count > @max) 
+                    @max = item.count 
+                end
             end
             @eachdata.push([lang, temp])
     	end
