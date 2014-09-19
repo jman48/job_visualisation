@@ -1,13 +1,22 @@
-var svg = null;
+/*
+ * Created by John Armstrong, 2014;
+ * 
+ * If you are looking at this maybe you should check out my portfolio: http://portfolio.johnarmstrong.co
+ */
+
+//Width and height of SVG
 var width = 800;
 var height = 800;
-var barHeight = height - 150;
-var bars = null;
-var scaleY = null;
-var xOffset = 200;
 
-function drawDonut(data) {
-    data = data;
+//Bar chart vars
+var barHeight = height - 150;	//Bar height has to be less than height to fit inside donut chart
+var scaleY = null;	//Set the y scale once with max height so that each language can be easily compared.
+var xOffset = 200;	//Offset to the left to center in donut.
+
+/*
+ * Draw a donut chart with arcs representing the amount of job for each language.
+ */
+function drawDonutChart(data) {
     var radius = Math.min(width, height) / 2;
     var arc = d3.svg.arc().outerRadius(radius - 10).innerRadius(radius - 70);
     var pie = d3.layout.pie().sort(null).value(function(d) {
@@ -23,7 +32,7 @@ function drawDonut(data) {
         d3.select("#tooltip_d3").select("#title").text(d.data[0])
         d3.select(this).attr("transform", "scale(1.03)");
         selectedLang = d.data[0];
-        updateBar(getSelected(selectedLang));
+        drawBarChart(getSelected(selectedLang));
         
     }).on("mouseout", function() {
         d3.select(this).style("opacity", 1);
@@ -35,23 +44,21 @@ function drawDonut(data) {
     }).ease("elastic").attr("d", arc).style("fill", function(d) {
         return color(d.data[0]);
     });
-    /*
-      g.append("text")
-          .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
-          .attr("dy", ".35em")
-          .style("text-anchor", "middle")
-          .text(function(d) { return d; });
-          */
 }
 
-function updateBar(newdata) {
+/*
+ * Draw a bar chart with each bar representing a salary range for a particular language.
+ */
+function drawBarChart(newdata) {    
+    
+    var bars = d3.select("#charts").selectAll("rect");
     
     bars.data(newdata)
     .exit()
     .remove();
     
    
-    bars = svg.selectAll("rect").data(newdata);
+    bars = d3.select("#charts").selectAll("rect").data(newdata);
     
     bars.enter().append("rect").attr("width", 20).attr("x", function(d, i) {
         return xOffset + (i * 21); //Bar width of 20 plus 1 for padding
@@ -60,7 +67,7 @@ function updateBar(newdata) {
     bars.transition().duration(800).delay(function(d, i) {
         return i * 20;
     }).attr("y", function(d) {        
-        return bHeight - scaleY(d.count); //Height minus data value
+        return barHeight - scaleY(d.count); //Height minus data value
     }).attr("height", function(d) {
         console.log("height", scaleY(d.count));
       	return scaleY(d.count);
@@ -68,7 +75,7 @@ function updateBar(newdata) {
         return color(d.language);
     });
     
-    svg.selectAll("rect")
+    d3.select("#charts").selectAll("rect")
         .on("mouseover", function(d) {
             d3.select(this).style("opacity", 0.6);
             //Tooltip
@@ -97,13 +104,10 @@ function getSelected(lang) {
 }
 
 /*
- * Setup the y axis scale so we can easily compare different data sets (languages)
+ * Setup some global vars
  */
 function setup(maxValue) {    
     scaleY = d3.scale.linear()
 				.domain([0, maxValue])
-				.range([0, bHeight - 100]);
-    
-    svg = d3.select("#charts").attr("width", width).attr("height", height);
-    bars = svg.selectAll("rect").data(data);
+				.range([0, barHeight - 100]);    
 }

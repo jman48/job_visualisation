@@ -23,6 +23,6 @@
     var color = d3.scale.category20();
     setup(<%= @max %>);
     //drawBar(getSelected(selectedLang));
-    updateBar(getSelected(selectedLang));
-    drawDonut(allData);
+    drawDonutChart(allData);
+    drawBarChart(getSelected(selectedLang));
 </script>
