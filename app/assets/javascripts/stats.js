@@ -5,13 +5,13 @@
  */
 
 //Width and height of SVG
-var width = 800;
-var height = 800;
+var width = 700;
+var height = 700;
 
 //Bar chart vars
 var barHeight = height - 150;	//Bar height has to be less than height to fit inside donut chart
 var scaleY = null;	//Set the y scale once with max height so that each language can be easily compared.
-var xOffset = 200;	//Offset to the left to center in donut.
+var xOffset = 170;	//Offset to the left to center in donut.
 
 /*
  * Draw a donut chart with arcs representing the amount of job for each language.
@@ -27,10 +27,10 @@ function drawDonutChart(data) {
         d3.select(this).style("opacity", 0.6);
         //Tooltip
         d3.select("#tooltip_d3").style("left", d3.event.pageX + "px").style("top", d3.event.pageY + "px").style("opacity", 1).select("#value").text(function() {
-            return d.data[1];
+            return "Count: " + d.data[1];
         })
         d3.select("#tooltip_d3").select("#title").text(d.data[0])
-        d3.select(this).attr("transform", "scale(1.03)");
+        d3.select(this).attr("transform", "scale(1.02)");
         selectedLang = d.data[0];
         drawBarChart(getSelected(selectedLang));
         
@@ -69,7 +69,6 @@ function drawBarChart(newdata) {
     }).attr("y", function(d) {        
         return barHeight - scaleY(d.count); //Height minus data value
     }).attr("height", function(d) {
-        console.log("height", scaleY(d.count));
       	return scaleY(d.count);
     }).attr("fill", function(d) {        
         return color(d.language);

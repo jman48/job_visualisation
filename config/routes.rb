@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
     
     get 'data/collect' => 'data_collection#getdata'
+    get 'data/region' => 'data_collection#databyregion'
     
     get 'stats' => 'stats#index'
     get 'stats/language' => 'stats#language'

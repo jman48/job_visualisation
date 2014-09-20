@@ -23,7 +23,32 @@
     line-height: 20px;
 }
 
-.chart {
-    width:510px;
-    margin: 0px;
+svg {
+    display: block;
+    margin: 0 auto;
+    margin-top:30px;
+}
+
+.navbar-inner{
+  background-color: rgb(31, 119, 180); /* background color will be black for all browsers */
+  color: white;
+}
+
+#links > li > a, #brand {	
+    color: white;
+    font-family: 'open sans';
+}
+
+#links > li > a {
+    font-size: 1.2em;
+}
+
+.title {
+    margin-top:30px;
+    font-family: 'open sans';
+    text-decoration: underline;
+}
+
+#brand {
+    font-size: 2em;
 }

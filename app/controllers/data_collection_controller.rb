@@ -19,7 +19,6 @@ class DataCollectionController < ApplicationController
             @data["count"] = jsonObject["TotalCount"].to_i
             @data["region"] = jsonObject["region"]
             @page += 1
-            puts "page1: " + @page.to_s
             while @page <= @pagecount do
                 json = JSON.parse(open("http://api.trademe.co.nz/v1/Search/Jobs.JSON?category=5112&salary_min=" + salary[0].to_s + "&salary_max=" + salary[1].to_s + "&search_string=" + type + "&page=" + @page.to_s).read)
                 json["List"].each do |list|
@@ -27,19 +26,40 @@ class DataCollectionController < ApplicationController
                     listing["language"] = type
                     listing["salary_min"] = salary[0]
                     listing["salary_max"] = salary[1]
-                    listing["listing"] = list.to_s
-                    puts listing
+                    listing["listing"] = list
                     Listing.create(listing)
                 end
                 @page += 1
-                puts "page: " + @page.to_s + "  page count: " + @pagecount.to_s
             end            
             #Language.create(@data)
         end
     end
     
     def databyregion 
-        
+        type = params[:lang]
+        salaryRanges = setupSalary
+        regions = setupRegions
+        @data = Hash.new 
+        salaryRanges.each do |salary|
+            @pagecount = 1;
+            @page = 1
+            jsonObject = JSON.parse(open("http://api.trademe.co.nz/v1/Search/Jobs.JSON?category=5112&salary_min=" + salary[0].to_s + "&salary_max=" + salary[1].to_s + "&search_string=" + type).read)
+            total = jsonObject["TotalCount"]
+            @data["language"] = type
+            @data["salary_min"] = salary[0].to_i
+            @data["salary_max"] = salary[1].to_i
+            @data["count"] = jsonObject["TotalCount"].to_i
+            @data["region"] = jsonObject["region"]
+            jsonObject["List"].each do |list|
+                    listing = Hash.new
+                    listing["language"] = type
+                    listing["salary_min"] = salary[0]
+                    listing["salary_max"] = salary[1]
+                    list["Title"] = list.to_s
+                    puts list.to_json
+            end            
+            #Language.create(@data)
+        end
     end
     
      private

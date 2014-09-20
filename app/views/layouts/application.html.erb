@@ -9,11 +9,47 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     
-   
+   <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    
+    <!-- Custom fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
-<%= yield %>
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+          <div class="navbar-inner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a id="brand" class="navbar-brand" href="http://portfolio.johnarmstrong.co">JOHN ARMSTRONG</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul id="links" class="nav navbar-nav navbar-right">
+                        <li><a href="#home">Home</a>
+                        </li>
+                        <li><a href="#about">About</a>                    
+                        </li>
+                        <li><a href="#contact">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+    <div class="container main">
+        <%= yield %>
+    </div>
+
 
 </body>
 </html>

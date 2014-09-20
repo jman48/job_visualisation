@@ -8,9 +8,8 @@
      <% end %>];
     
 </script>  
-<svg id="charts"></svg>
-    <div id="chart" class="chart"></div>
-    <div id="chart2" class="chart"></div>
+<h1 class="title text-center"> Language by Salary</h1>
+    <svg id="charts"></svg>
     
     <!-- Hidden tool tip. sssshhhh! -->
     <div id="tooltip_d3" class="hidden_tool">
@@ -18,7 +17,6 @@
         <p><span id="value">1</span></p>
     </div>
 <script>
-    var data = <%= raw @langdata.to_json %>;
     var allData = <%= raw @alldata.to_json %>;
     var color = d3.scale.category20();
     setup(<%= @max %>);
