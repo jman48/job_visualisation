@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140919050028) do
+ActiveRecord::Schema.define(version: 20140921112917) do
 
   create_table "languages", force: true do |t|
     t.string   "language"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20140919050028) do
   end
 
   create_table "listings", force: true do |t|
-    t.string   "listing"
+    t.text     "listing",    limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "language"
