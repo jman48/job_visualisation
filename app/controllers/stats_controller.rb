@@ -11,8 +11,14 @@ class StatsController < ApplicationController
     def language   
         #get data for each language
         @eachdata = Array.new
+        salarys = setupSalary
         @max = 0;
         Language.uniq.pluck(:language).each do |lang|
+            salarys.each do |salary|
+                salary[0]
+                salary[1]
+                
+            end
             query = Language.where("language = ?", lang)
             temp = Array.new
             query.each do |item|
@@ -26,8 +32,8 @@ class StatsController < ApplicationController
         
         #get each language and count for that language
         @alldata = Array.new
-        Language.uniq.pluck(:language).each do |lang|
-            count = Language.where("language = ?", lang).sum(:count)
+        Listing.uniq.pluck(:language).each do |lang|
+            count = Listing.where("language = ?", lang).count()
             @alldata.push([lang, count])
         end      
     end  
@@ -52,5 +58,16 @@ class StatsController < ApplicationController
             end
         end
     end
+    
+    private
+        def setupSalary
+           salaryRanges = Array.new
+           salary = 30000
+            while salary < 200000 do
+               salaryRanges.push([salary, salary + 10000]) 
+               salary += 10000
+            end
+            return salaryRanges;
+        end
         
 end
