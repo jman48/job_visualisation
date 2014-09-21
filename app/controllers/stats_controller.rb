@@ -4,7 +4,7 @@ class StatsController < ApplicationController
         @query = Listing.where("language = ?", params[:lang])
         @data = Array.new
         @query.each do |item|
-            @data.push(item.listing)
+            @data.push(item.listing["Region"])
         end
     end
     
@@ -42,8 +42,14 @@ class StatsController < ApplicationController
     
     private 
     def getdata
+        @data = Hash.new
         Listing.uniq.pluck(:language).each do |lang| 
-            
+            langObject = Hash.new
+            langObject["name"] = lang
+            region = Array.new
+            Listing.where("language = ?", lang).each do |listing|
+                listing.listing
+            end
         end
     end
         

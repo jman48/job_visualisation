@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     get 'data/collect' => 'data_collection#getdata'
     get 'data/region' => 'data_collection#databyregion'
     
+    root :to => 'stats#language'
+    
     get 'stats' => 'stats#index'
     get 'stats/language' => 'stats#language'
     get 'stats/seedata' => 'stats#seedata'
