@@ -1,7 +1,7 @@
 class CreateListings < ActiveRecord::Migration
   def change
     create_table :listing do |t|
-      t.string :listing
+        t.text :listing
 
       t.timestamps
     end
