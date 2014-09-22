@@ -7,10 +7,11 @@ class DataCollectionController < ApplicationController
         salaryRanges = setupSalary
         regions = setupRegions
         @data = Hash.new 
+        puts salaryRanges
         salaryRanges.each do |salary|
             @pagecount = 1;
             @page = 1
-            jsonObject = JSON.parse(open("http://api.trademe.co.nz/v1/Search/Jobs.JSON?category=5112&salary_min=" + salary[0].to_s + "&salary_max=" + salary[1].to_s + "&search_string=" + type).read)
+            jsonObject = JSON.parse(open("http://api.trademe.co.nz/v1/Search/Jobs.JSON?category=5112&salary_min=" + salary[0].to_s + "&salary_max=" + salary[1].to_s + "&search_string=" + type + "&page=" + @page.to_s).read)
             total = jsonObject["TotalCount"]
             @pagecount += (total / 25).round
             @data["language"] = type
@@ -20,6 +21,8 @@ class DataCollectionController < ApplicationController
             @data["region"] = jsonObject["region"]
             @page += 1
             while @page <= @pagecount do
+                puts @pagr
+                puts @pagecount
                 json = JSON.parse(open("http://api.trademe.co.nz/v1/Search/Jobs.JSON?category=5112&salary_min=" + salary[0].to_s + "&salary_max=" + salary[1].to_s + "&search_string=" + type + "&page=" + @page.to_s).read)
                 json["List"].each do |list|
                     listing = Hash.new
@@ -31,7 +34,7 @@ class DataCollectionController < ApplicationController
                 end
                 @page += 1
             end            
-            #Language.create(@data)
+            Language.create(@data)
         end
     end
     

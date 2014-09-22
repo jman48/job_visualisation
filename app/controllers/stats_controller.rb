@@ -26,8 +26,8 @@ class StatsController < ApplicationController
         
         #get each language and count for that language
         @alldata = Array.new
-        Listing.uniq.pluck(:language).each do |lang|
-            count = Listing.where("language = ?", lang).count()
+        Language.uniq.pluck(:language).each do |lang|
+            count = Language.where("language = ?", lang).sum(:count)
             @alldata.push([lang, count])
         end      
     end  
@@ -37,19 +37,6 @@ class StatsController < ApplicationController
         tempdata = Language.where("language = ?", params[:lang]) 
         tempdata.each do |item|
             @data.push(item) 
-        end
-    end
-    
-    private 
-    def getdata
-        @data = Hash.new
-        Listing.uniq.pluck(:language).each do |lang| 
-            langObject = Hash.new
-            langObject["name"] = lang
-            region = Array.new
-            Listing.where("language = ?", lang).each do |listing|
-                listing.listing
-            end
         end
     end
     
