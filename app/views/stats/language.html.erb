@@ -1,13 +1,4 @@
-<script>
-    var selectedLang = "<%= params[:lang] %>";
-    var allLangs = [
-    <% @eachdata.each do |lang| %>
-            [<% lang[1].each do |item| %>
-               <%= raw item.to_json %>,
-           <% end %>],
-     <% end %>];
-    
-</script>  
+ 
 <h1 class="title text-center"> Language by Salary</h1>
     <svg id="charts"></svg>
     
@@ -17,6 +8,14 @@
         <p><span id="value">1</span></p>
     </div>
 <script>
+    var selectedLang = "<%= params[:lang] %>";
+    var allLangs = [
+    <% @eachdata.each do |lang| %>
+            [<% lang[1].each do |item| %>
+               <%= raw item.to_json %>,
+           <% end %>],
+     <% end %>];
+             
     var allData = <%= raw @alldata.to_json %>;
     var color = d3.scale.category20();
     setup(<%= @max %>);
@@ -24,3 +23,5 @@
     drawDonutChart(allData);
     drawBarChart(getSelected(selectedLang));
 </script>
+
+
